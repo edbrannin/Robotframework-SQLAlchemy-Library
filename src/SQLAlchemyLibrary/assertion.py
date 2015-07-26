@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from robot.libraries.BuiltIn import BuiltIn
 import sqlalchemy
 
 class Assertion(object):
@@ -176,3 +177,20 @@ class Assertion(object):
             if schema_name is not None:
                 table_name = "%s.%s" % (table_name, schema_name)
             raise AssertionError("Table '%s' does not exist in the db" % table_name)
+
+    def query_for_single_value(self, selectStatement, expected_value=None, message=None, **named_args):
+        """Return the result of this query IF it returns only 1 row with 1 column.
+
+        Fails via `Length Should Be` if the query returns
+        multiple rows or multiple columns.
+
+        Optionally check the resulting value with `Should Be Equal`.
+
+        NOTE: Keyword-argument Bind-parameters are supported,
+        but the arguments `expected_value` and `message` are reserved
+        for optionally passing to `Should Be Equal`
+        if `expected_value` is not None.
+
+        This keyword will not try to check if your single value is null.
+
+        Example:

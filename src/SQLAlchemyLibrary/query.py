@@ -12,7 +12,11 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from collections import Counter
+
+from robot.libraries.BuiltIn import BuiltIn
 from robot.api import logger
+
 
 class Query(object):
     """
@@ -226,6 +230,17 @@ class Query(object):
         | Execute Sql String | SELECT * FROM person WHERE full_name_semicolon = 'john;doe' |
         """
         self._run_query_list(sqlString.split(';'), **named_args)
+
+    def query_for_single_column(self, selectStatement, *expected_values, **named_args):
+        answer = self.query(selectStatement, **named_args)
+        if len(answer) == 0:
+            return answer
+        BuiltIn().length_should_be(answer[0], 1,
+                "Expected one column in the rest of %s" % selectStatement)
+        answer = [row[0] for row in answer]
+        if len(expected_values) > 0:
+            BuiltIn().should_be_equal(Counter(answer), Counter(expected_values),
+            "Expected a different set of ")
 
     def _run_query_list(self, queries, **named_args):
         with self._dbconnection.begin():
