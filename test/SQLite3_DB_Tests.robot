@@ -7,15 +7,15 @@ ${DBName}         my_db_test
 
 *** Test Cases ***
 Remove old DB if exists
-    ${Status}    ${value} =    Run Keyword And Ignore Error    File Should Not Exist    ./${DBName}.db
+    ${Status}    ${value} =    Run Keyword And Ignore Error    File Should Not Exist    ${CURDIR}/${DBName}.db
     Comment    Run Keyword If    "${Status}" == "FAIL"    Run Keyword And Ignore Error    Run    rm -rf $HOME/Desktop/TestCases/TestSQLite3.db
-    Run Keyword If    "${Status}" == "FAIL"    Run Keyword And Ignore Error    Run    rm -rf ./${DBName}.db
-    File Should Not Exist    ./${DBName}.db
+    Run Keyword If    "${Status}" == "FAIL"    Run Keyword And Ignore Error    Run    rm -rf ${CURDIR}/${DBName}.db
+    File Should Not Exist    ${CURDIR}/${DBName}.db
     Comment    Sleep    1s
 
 Connect to SQLiteDB
     Comment    Connect To Database Using Custom Params sqlite3 database='path_to_dbfile\dbname.db'
-    Connect To Database    sqlite:///${dbName}.db
+    Connect To Database    sqlite:///${CURDIR}/${dbName}.db
 
 Create person table
     ${output} =    Execute SQL String    CREATE TABLE person (id integer unique,first_name varchar,last_name varchar);
@@ -23,7 +23,7 @@ Create person table
     Should Be Equal As Strings    ${output}    None
 
 Execute SQL Script - Insert Data person table
-    ${output} =    Execute SQL Script    ./${DBName}_insertData.sql
+    ${output} =    Execute SQL Script    ${CURDIR}/${DBName}_insertData.sql
     Log    ${output}
     Should Be Equal As Strings    ${output}    None
 
