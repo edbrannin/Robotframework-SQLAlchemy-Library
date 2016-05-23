@@ -157,25 +157,32 @@ class Assertion(object):
             raise AssertionError("Expected less rows to be returned from '%s' "
                                  "than the returned rows of %s" % (selectStatement, num_rows))
 
-    def table_must_exist(self,tableName):
-        """
-        Check if the table given exists in the database.
+    def table_must_exist(self, table_name, schema_name=None):
+        """*DEPRECATED* Use keyword `Table Should Exist` instead."""
+        self.table_should_exist(table_name, schema_name)
+
+    def table_should_exist(self, table_name, schema_name=None, message=None):
+        """Check if the table given exists in the database.
 
         For example, given we have a table `person` in a database
 
         When you do the following:
-        | Table Must Exist | person |
+        | Table Should Exist | person |
 
         Then you will get the following:
-        | Table Must Exist | person | # PASS |
-        | Table Must Exist | first_name | # FAIL |
+        | Table Should Exist | person | # PASS |
+        | Table Should Exist | first_name | # FAIL |
         """
         md = sqlalchemy.schema.MetaData(bind=self._engine)
         table = sqlalchemy.schema.Table(table_name, md, schema=schema_name)
         if not table.exists():
             if schema_name is not None:
                 table_name = "%s.%s" % (table_name, schema_name)
-            raise AssertionError("Table '%s' does not exist in the db" % table_name)
+            if message:
+                message = ": %s" % message
+            else:
+                message = ''
+            raise AssertionError("Table '%s' should exist but does not%s" % (table_name, message))
 
     def query_for_single_value(self, selectStatement, expected_value=None, message=None, **named_args):
         """Return the result of this query IF it returns only 1 row with 1 column.
