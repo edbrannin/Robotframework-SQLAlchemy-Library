@@ -136,8 +136,7 @@ class Assertion(object):
                                  "than the returned rows of %s" % (selectStatement, num_rows))
 
     def row_count_is_less_than_x(self,selectStatement,numRows):
-        """
-        Check if the number of rows returned from `selectStatement` is less
+        """Check if the number of rows returned from `selectStatement` is less
         than the value submitted. If not, then this will throw an AssertionError.
 
         For example, given we have a table `person` with the following data:
@@ -194,3 +193,27 @@ class Assertion(object):
         This keyword will not try to check if your single value is null.
 
         Example:
+        | ${count}= | Query for Single Value | select count(*) from my_table; |
+
+        Examples with assertions:
+        | ${count}= | Query for Single Value | select count(*) from my_table; | ${5} |
+        | ${count}= | Query for Single Value | select count(*) from my_table; | ${5} | Should have 5 rows in my_table |
+        """
+        values = self.query(selectStatement, **named_args)
+        BuiltIn().length_should_be(values, 1,
+                "There should be exactly one row returned by the query %s" % selectStatement)
+        row = values[0]
+        BuiltIn().length_should_be(row, 1, "There should be exactly one column in the results of %s" % selectStatement)
+        answer = row[0]
+        if expected_value is not None:
+            BuiltIn().should_be_equal(answer, expected_value, message)
+        return answer
+
+    def query_for_single_number(self, selectStatement, expected_value=None, message=None, **named_args):
+        answer = self.query_for_single_value(selectStatement, **named_args)
+        if expected_value is not None:
+            BuiltIn().should_be_equal_as_numbers(answer, expected_value, message)
+
+    def query_for_count(self, selectStatement, expected_value=None, message=None, **named_args):
+        """Alias for `Query for Single Number`."""
+        return self.query_for_single_number(selectStatement, expected_value=None, message=None, **named_args)
