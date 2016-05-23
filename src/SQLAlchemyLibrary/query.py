@@ -12,8 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from collections import Counter
-
 from robot.libraries.BuiltIn import BuiltIn
 from robot.api import logger
 
@@ -239,8 +237,11 @@ class Query(object):
                 "Expected one column in the rest of %s" % selectStatement)
         answer = [row[0] for row in answer]
         if len(expected_values) > 0:
-            BuiltIn().should_be_equal(Counter(answer), Counter(expected_values),
-            "Expected a different set of ")
+            try:
+                from collections import Counter
+                BuiltIn().should_be_equal(Counter(answer), Counter(expected_values), "Expected a different set of ")
+            except ImportError:
+                BuiltIn().should_be_equal(answer, expected_values, "Expected a different list of ")
 
     def _run_query_list(self, queries, **named_args):
         with self._dbconnection.begin():
