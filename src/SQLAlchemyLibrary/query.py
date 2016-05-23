@@ -51,7 +51,10 @@ class Query(object):
         And get the following
         See, Franz Allan
         """
+        logger.debug("Running query: {query}".format(query=selectStatement))
+        logger.debug("Query parameters: {named_args}".format(named_args=named_args))
         with self._dbconnection.begin():
+            logger.info(selectStatement)
             return self._dbconnection.execute(selectStatement, **named_args).fetchall()
 
     def row_count(self, selectStatement, **named_args):
