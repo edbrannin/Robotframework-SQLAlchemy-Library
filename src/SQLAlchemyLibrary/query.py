@@ -244,9 +244,11 @@ class Query(object):
                 from collections import Counter
                 BuiltIn().should_be_equal(Counter(answer), Counter(expected_values), "Expected a different set of ")
             except ImportError:
+                # Python < 2.7
                 BuiltIn().should_be_equal(answer, expected_values, "Expected a different list of ")
 
     def _run_query_list(self, queries, **named_args):
         with self._dbconnection.begin():
             for query in queries:
                 self._dbconnection.execute(query, **named_args)
+
