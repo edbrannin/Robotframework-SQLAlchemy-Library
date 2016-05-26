@@ -197,7 +197,7 @@ class Assertion(object):
         for optionally passing to `Should Be Equal`
         if `expected_value` is not None.
 
-        This keyword will not try to check if your single value is null.
+        This keyword will NOT try to check if your single value is null.
 
         Example:
         | ${count}= | Query for Single Value | select count(*) from my_table; |
@@ -205,6 +205,11 @@ class Assertion(object):
         Examples with assertions:
         | ${count}= | Query for Single Value | select count(*) from my_table; | ${5} |
         | ${count}= | Query for Single Value | select count(*) from my_table; | ${5} | Should have 5 rows in my_table |
+
+        Use a seperate assertaion if you want to ensure a null value:
+        | ${value}= | Query for Single Value | select foo from my_table where id=:id; | id=5 |
+        | Should Be Equal | ${value} | ${None} | Should be null! |
+
         """
         values = self.query(selectStatement, **named_args)
         BuiltIn().length_should_be(values, 1,
