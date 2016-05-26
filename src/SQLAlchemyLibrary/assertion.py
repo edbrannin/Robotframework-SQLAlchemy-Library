@@ -184,6 +184,60 @@ class Assertion(object):
                 message = ''
             raise AssertionError("Table '%s' should exist but does not%s" % (table_name, message))
 
+    def query_for_single_column(self, selectStatement, *expected_values, **params):
+        """
+        Execute the given query (which should return one column, but could be multiple rows).
+
+        The first argument is the SQL Query to run.
+
+        If more than one argument is provided, assert that the result-set contains each of the non-first arguments and nothing else.
+
+        Examples:
+
+        Suppose we have a "stuff" table with these columns and values:
+
+        | A | B | C |
+        | 1 | 2 | 3 |
+        | 4 | 5 | 6 |
+        | 7 | 8 | 9 |
+
+        ---
+
+        | ${values}= | Query for Single Column | select A from stuff |
+        Result: A list containing [1, 4, 7]. \ No "Should" assertions happen.
+
+        ---
+
+        | ${values}= | Query for Single Column | select A from stuff | 1 | 4 | 7 |
+
+        Result: PASS. \ Also, A list containing [1, 4, 7].
+
+        ---
+
+        | ${values}= | Query for Single Column | select A from stuff | 12345 |
+
+        Result: FAIL because 12345 is not in [1, 4, 7].
+
+        ---
+
+        | ${values}= | Query for Single Column | select A from stuff | 1 | 4 |
+
+        Result: FAIL because we got [1, 4, 7] but were only expecting [1, 4].
+
+        """
+        raw_rows = self.query(selectStatement, **named_args)
+        rows = [row[0] for row in raw_rows]
+        if len(expected_values) > 0:
+            builtin = BuiltIn()
+            for expected_value in expected_values:
+                builtin.should_contain(rows, expected_value)
+            builtin.log_many("Expecting values:", *expected_values)
+            builtin.length_should_be(rows, len(expected_values),
+                    "There are more or fewer rows than expected!")
+        return rows
+
+
+
     def query_for_single_value(self, selectStatement, expected_value=None, message=None, **named_args):
         """Return the result of this query IF it returns only 1 row with 1 column.
 
@@ -215,7 +269,8 @@ class Assertion(object):
         BuiltIn().length_should_be(values, 1,
                 "There should be exactly one row returned by the query %s" % selectStatement)
         row = values[0]
-        BuiltIn().length_should_be(row, 1, "There should be exactly one column in the results of %s" % selectStatement)
+        BuiltIn().length_should_be(row, 1,
+                "There should be exactly one column in the results of %s" % selectStatement)
         answer = row[0]
         if expected_value is not None:
             BuiltIn().should_be_equal(answer, expected_value, message)
@@ -228,4 +283,4 @@ class Assertion(object):
 
     def query_for_count(self, selectStatement, expected_value=None, message=None, **named_args):
         """Alias for `Query for Single Number`."""
-        return self.query_for_single_number(selectStatement, expected_value=None, message=None, **named_args)
+        return self.query_for_single_number(selectStatement, expected_value=expected_value, message=message, **named_args)
