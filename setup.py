@@ -32,7 +32,7 @@ __version__ = open(__version_file_path__, 'r').read().strip()
 def main():
     setup(name         = 'robotframework-SQLAlchemyLibrary',
           version      = __version__,
-          description  = 'SQLAlchemy wrapper library for Robot Framework; forked from robotframework-database-library 0.6',
+          description  = 'SQLAlchemy wrapper library for Robot Framework; forked from robotframework-database-library 0.7',
           author       = 'Ed Brannin',
           author_email = 'edbrannin@gmail.com',
           url          = 'https://github.com/edbrannin/Robotframework-SQLAlchemy-Library',
@@ -41,7 +41,6 @@ def main():
           requires     = ['sqlalchemy'],
           install_requires = ['robotframework', 'sqlalchemy'],
           )
-        
 
 if __name__ == "__main__":
     main()
