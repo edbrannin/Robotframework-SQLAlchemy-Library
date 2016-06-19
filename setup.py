@@ -22,7 +22,10 @@ try:
 except ImportError:
     from distutils.core import setup
 
-import sys, os
+import setuptools
+import sys
+import os
+
 src_path = os.path.join(os.path.dirname(__file__), 'src')
 sys.path.insert(0, src_path)
 
@@ -38,6 +41,7 @@ def main():
           url          = 'https://github.com/edbrannin/Robotframework-SQLAlchemy-Library',
           package_dir  = { '' : 'src'},
           packages     = ['SQLAlchemyLibrary'],
+          package_data = {'SQLAlchemyLibrary': ['VERSION']},
           requires     = ['sqlalchemy'],
           install_requires = ['robotframework', 'sqlalchemy'],
           )
