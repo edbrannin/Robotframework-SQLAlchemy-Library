@@ -119,7 +119,7 @@ class Query(object):
         will get:
         | Delete All Rows From Table | first_name | # FAIL |
         """
-        selectStatement = ("DELETE FROM %s;" % tableName)
+        selectStatement = ("DELETE FROM %s" % tableName)
         self.execute_sql_string(selectStatement)
 
     def is_comment(self, sql_line):
