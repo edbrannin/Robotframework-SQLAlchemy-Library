@@ -249,6 +249,6 @@ class Query(object):
 
     def _run_query_list(self, queries, **named_args):
         with self._dbconnection.begin():
-            for query in queries:
+            for query in filter(str.strip, queries):
                 self._dbconnection.execute(query, **named_args)
 
