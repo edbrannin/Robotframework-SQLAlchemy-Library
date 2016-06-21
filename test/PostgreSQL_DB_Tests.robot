@@ -88,12 +88,14 @@ Verify foobar Description
 Verify Query - Row Count person table
     ${output} =    Query    SELECT COUNT(*) FROM person;
     Log    ${output}
-    Should Be Equal As Strings    ${output}    [(2L,)]
+    Should Be Equal As Strings    ${output}    ((2L,))
+    Should Be Equal    ${output}[0][0]    ${2}
 
 Verify Query - Row Count foobar table
     ${output} =    Query    SELECT COUNT(*) FROM foobar;
     Log    ${output}
-    Should Be Equal As Strings    ${output}    [(0L,)]
+    Should Be Equal As Strings    ${output}    ((0L,))
+    Should Be Equal    ${output}[0][0]    ${0}
 
 Verify Execute SQL String - Row Count person table
     ${output} =    Execute SQL String    SELECT COUNT(*) FROM person;
@@ -113,7 +115,7 @@ Insert Data Into Table foobar
 Verify Query - Row Count foobar table 1 row
     ${output} =    Query    SELECT COUNT(*) FROM foobar;
     Log    ${output}
-    Should Be Equal As Strings    ${output}    [(1L,)]
+    Should Be Equal As Strings    ${output}    ((1L,))
 
 Verify Delete All Rows From Table - foobar
     Delete All Rows From Table    foobar
