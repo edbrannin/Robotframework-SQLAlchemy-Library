@@ -17,4 +17,5 @@ services:
   - postgresql
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
-  - mysql -e 'create database myapp_test;'
+  - mysql -e 'create database travis_ci_test;'
+  - pip install pymysql psycopg2
