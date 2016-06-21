@@ -14,9 +14,9 @@
 
 import os
 
-from connection_manager import ConnectionManager
-from query import Query
-from assertion import Assertion
+from SQLAlchemyLibrary.connection_manager import ConnectionManager
+from SQLAlchemyLibrary.query import Query
+from SQLAlchemyLibrary.assertion import Assertion
 
 __version_file_path__ = os.path.join(os.path.dirname(__file__), 'VERSION')
 __version__ = open(__version_file_path__, 'r').read().strip()

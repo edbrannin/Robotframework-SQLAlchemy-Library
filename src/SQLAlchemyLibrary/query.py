@@ -119,7 +119,7 @@ class Query(object):
         will get:
         | Delete All Rows From Table | first_name | # FAIL |
         """
-        selectStatement = ("DELETE FROM %s;" % tableName)
+        selectStatement = ("DELETE FROM {}".format(tableName))
         self.execute_sql_string(selectStatement)
 
     def is_comment(self, sql_line):
@@ -237,7 +237,7 @@ class Query(object):
         if len(answer) == 0:
             return answer
         BuiltIn().length_should_be(answer[0], 1,
-                "Expected one column in the rest of %s" % selectStatement)
+                "Expected one column in the rest of {}".format(selectStatement))
         answer = [row[0] for row in answer]
         if len(expected_values) > 0:
             try:
@@ -249,6 +249,6 @@ class Query(object):
 
     def _run_query_list(self, queries, **named_args):
         with self._dbconnection.begin():
-            for query in queries:
+            for query in filter(str.strip, queries):
                 self._dbconnection.execute(query, **named_args)
 

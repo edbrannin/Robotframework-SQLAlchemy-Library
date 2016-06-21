@@ -39,8 +39,8 @@ class Assertion(object):
         | Check If Exists In Database | SELECT id FROM person WHERE first_name = 'John' | # FAIL |
         """
         if not self.query(selectStatement):
-            raise AssertionError("Expected to have have at least one row from '%s' "
-                                 "but got 0 rows." % selectStatement)
+            raise AssertionError("Expected to have have at least one row from '{}' "
+                                 "but got 0 rows.".format(selectStatement))
 
     def check_if_not_exists_in_database(self,selectStatement):
         """
@@ -64,8 +64,8 @@ class Assertion(object):
         """
         queryResults = self.query(selectStatement)
         if queryResults:
-            raise AssertionError("Expected to have have no rows from '%s' "
-                                 "but got some rows : %s." % (selectStatement, queryResults))
+            raise AssertionError("Expected to have have no rows from '{}' "
+                                 "but got some rows : {}.".format(selectStatement, queryResults))
 
     def row_count_is_0(self,selectStatement):
         """
@@ -86,8 +86,8 @@ class Assertion(object):
         """
         num_rows = self.row_count(selectStatement)
         if (num_rows > 0):
-            raise AssertionError("Expected zero rows to be returned from '%s' "
-                                 "but got rows back. Number of rows returned was %s" % (selectStatement, num_rows))
+            raise AssertionError("Expected zero rows to be returned from '{}' "
+                                 "but got rows back. Number of rows returned was {}".format(selectStatement, num_rows))
 
     def row_count_is_equal_to_x(self,selectStatement,numRows):
         """
@@ -109,8 +109,8 @@ class Assertion(object):
         """
         num_rows = self.row_count(selectStatement)
         if (num_rows != int(numRows.encode('ascii'))):
-            raise AssertionError("Expected same number of rows to be returned from '%s' "
-                                 "than the returned rows of %s" % (selectStatement, num_rows))
+            raise AssertionError("Expected same number of rows to be returned from '{}' "
+                                 "than the returned rows of {}".format(selectStatement, num_rows))
 
     def row_count_is_greater_than_x(self,selectStatement,numRows):
         """
@@ -132,8 +132,8 @@ class Assertion(object):
         """
         num_rows = self.row_count(selectStatement)
         if (num_rows <= int(numRows.encode('ascii'))):
-            raise AssertionError("Expected more rows to be returned from '%s' "
-                                 "than the returned rows of %s" % (selectStatement, num_rows))
+            raise AssertionError("Expected more rows to be returned from '{}' "
+                                 "than the returned rows of {}".format(selectStatement, num_rows))
 
     def row_count_is_less_than_x(self,selectStatement,numRows):
         """Check if the number of rows returned from `selectStatement` is less
@@ -154,8 +154,8 @@ class Assertion(object):
         """
         num_rows = self.row_count(selectStatement)
         if (num_rows >= int(numRows.encode('ascii'))):
-            raise AssertionError("Expected less rows to be returned from '%s' "
-                                 "than the returned rows of %s" % (selectStatement, num_rows))
+            raise AssertionError("Expected less rows to be returned from '{}' "
+                                 "than the returned rows of {}".format(selectStatement, num_rows))
 
     def table_must_exist(self, table_name, schema_name=None):
         """*DEPRECATED* Use keyword `Table Should Exist` instead."""
@@ -177,12 +177,12 @@ class Assertion(object):
         table = sqlalchemy.schema.Table(table_name, md, schema=schema_name)
         if not table.exists():
             if schema_name is not None:
-                table_name = "%s.%s" % (table_name, schema_name)
+                table_name = "{}.{}".format(table_name, schema_name)
             if message:
-                message = ": %s" % message
+                message = ": {}".format(message)
             else:
-                message = ''
-            raise AssertionError("Table '%s' should exist but does not%s" % (table_name, message))
+                message = ""
+            raise AssertionError("Table '{}' should exist but does not {}".format(table_name, message))
 
     def query_for_single_column(self, selectStatement, *expected_values, **params):
         """
@@ -267,10 +267,10 @@ class Assertion(object):
         """
         values = self.query(selectStatement, **named_args)
         BuiltIn().length_should_be(values, 1,
-                "There should be exactly one row returned by the query %s" % selectStatement)
+                "There should be exactly one row returned by the query {}".format(selectStatement))
         row = values[0]
         BuiltIn().length_should_be(row, 1,
-                "There should be exactly one column in the results of %s" % selectStatement)
+                "There should be exactly one column in the results of {}".format(selectStatement))
         answer = row[0]
         if expected_value is not None:
             BuiltIn().should_be_equal(answer, expected_value, message)
