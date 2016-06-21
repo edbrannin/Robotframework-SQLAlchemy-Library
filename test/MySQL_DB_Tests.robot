@@ -1,15 +1,15 @@
 *** Settings ***
-Suite Setup       Connect To Database    pymysql    ${DBName}    ${DBUser}    ${DBPass}    ${DBHost}    ${DBPort}
+Suite Setup       Connect To Database    mysql+pymysql://${DBUser}:${DBPass}@${DBHost}:${DBPort}/${DBName}
 Suite Teardown    Disconnect From Database
-Library           DatabaseLibrary
+Library           SQLAlchemyLibrary
 Library           OperatingSystem
 
 *** Variables ***
-${DBHost}         hostname.domainname.com
-${DBName}         my_db_test
-${DBPass}         Password
+${DBHost}         127.0.0.1
+${DBName}         travis_ci_test
+${DBPass}         ${EMPTY}
 ${DBPort}         3306
-${DBUser}         testUser
+${DBUser}         travis
 
 *** Test Cases ***
 Create person table

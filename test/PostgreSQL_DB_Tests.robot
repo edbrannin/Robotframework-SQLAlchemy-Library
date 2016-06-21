@@ -1,15 +1,15 @@
 *** Settings ***
-Suite Setup       Connect To Database    psycopg2    ${DBName}    ${DBUser}    ${DBPass}    ${DBHost}    ${DBPort}
+Suite Setup       Connect To Database    postgresql+psycopg2://${DBUser}:${DBPass}@${DBHost}:${DBPort}/${DBName}
 Suite Teardown    Disconnect From Database
-Library           DatabaseLibrary
+Library           SQLAlchemyLibrary
 Library           OperatingSystem
 
 *** Variables ***
-${DBHost}         hostname.domainname.com
-${DBName}         my_db_test
-${DBPass}         Password
+${DBHost}         127.0.0.1
+${DBName}         travis_ci_test
+${DBPass}         ${EMPTY}
 ${DBPort}         5432
-${DBUser}         testUser
+${DBUser}         postgres
 
 *** Test Cases ***
 Create person table

@@ -12,3 +12,9 @@ python:
 install: "python setup.py install"
 # command to run tests
 script: pybot test
+services:
+  - mysql
+  - postgresql
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - mysql -e 'create database myapp_test;'
