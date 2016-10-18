@@ -89,13 +89,13 @@ Verify Query - Row Count person table
     ${output} =    Query    SELECT COUNT(*) FROM person;
     Log    ${output}
     Should Be Equal As Strings    ${output}    [(2L,)]
-    Should Be Equal    ${output}[0][0]    ${2}
+    Should Be Equal    ${output[0][0]}    ${2}
 
 Verify Query - Row Count foobar table
     ${output} =    Query    SELECT COUNT(*) FROM foobar;
     Log    ${output}
     Should Be Equal As Strings    ${output}    [(0L,)]
-    Should Be Equal    ${output}[0][0]    ${0}
+    Should Be Equal    ${output[0][0]}    ${0}
 
 Verify Execute SQL String - Row Count person table
     ${output} =    Execute SQL String    SELECT COUNT(*) FROM person;
