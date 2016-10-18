@@ -23,34 +23,35 @@ __version__ = open(__version_file_path__, 'r').read().strip()
 
 class SQLAlchemyLibrary(ConnectionManager, Query, Assertion):
     """
-    Database Library contains utilities meant for Robot Framework's usage.
+    SQLAlchemy Library allows you to interact with your database in Robot Framework tests.
 
     This can allow you to query your database after an action has been made to verify the results.
 
-    This is `compatible*` with any Database API Specification 2.0 module.
+    This can use any database supported by SQLAlchemy, including Oracle, MySQL, Postgres, SQLite.
+    (Not yet tested on Oracle).
+
+    This should be a drop-in replacement for DatabaseLibrary in most situations.
+
+    Advantages over DatabaseLibrary
+
+    - Ability to provide named-parameter BIND values
+
+    == References: ==
+
+     - SQLAlchemy documentation - http://docs.sqlalchemy.org/en/latest/index.html
+     - List of SQLAlchemy Dialects -  http://docs.sqlalchemy.org/en/latest/dialects/
+     - Python Database Programming - http://wiki.python.org/moin/DatabaseProgramming/
+
+    == Notes: ==
 
 
 
-    References:
+    === Example Usage: ===
 
-     + Database API Specification 2.0 - http://www.python.org/dev/peps/pep-0249/
-
-     + Lists of DB API 2.0 - http://wiki.python.org/moin/DatabaseInterfaces
-
-     + Python Database Programming - http://wiki.python.org/moin/DatabaseProgramming/
-
-    Notes:
-
-
-
-    `compatible* - or at least theoretically it should be compatible. Currently tested only with postgresql
-    (using psycopg2).`
-
-    Example Usage:
     | # Setup |
     | Connect to Database |
     | # Guard assertion (verify that test started in expected state). |
-    | Check if not exists in database | select id from person where first_name = 'Franz Allan' and last_name = 'See' |
+    | Check if not exists in database | select id from person where first_name = :first_name and last_name = :last_name | firat_name=Franz Allan | last_name=See |
     | # Drive UI to do some action |
     | Go To | http://localhost/person/form.html | | # From selenium library |
     | Input Text |  name=first_name | Franz Allan | # From selenium library |
