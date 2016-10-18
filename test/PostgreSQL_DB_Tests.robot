@@ -29,17 +29,17 @@ Execute SQL String - Create Table
     Should Be Equal As Strings    ${output}    None
 
 Check If Exists In DB - Franz Allan
-    Check If Exists In Database    SELECT id FROM person WHERE first_name = 'Franz Allan';
+    Check If Exists In Database    SELECT id FROM person WHERE first_name \= 'Franz Allan';
 
 Check If Not Exists In DB - Joe
-    Check If Not Exists In Database    SELECT id FROM person WHERE first_name = 'Joe';
+    Check If Not Exists In Database    SELECT id FROM person WHERE first_name \= 'Joe';
 
 Table Should Exist - person
     Table Should Exist    person
     Table Must Exist    person
 
 Verify Row Count is 0
-    Row Count is 0    SELECT * FROM person WHERE first_name = 'NotHere';
+    Row Count is 0    SELECT * FROM person WHERE first_name \= 'NotHere';
 
 Verify Row Count is Equal to X
     Row Count is Equal to X    SELECT id FROM person;    2
