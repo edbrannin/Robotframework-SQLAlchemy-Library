@@ -34,7 +34,8 @@ Check If Exists In DB - Franz Allan
 Check If Not Exists In DB - Joe
     Check If Not Exists In Database    SELECT id FROM person WHERE first_name = 'Joe';
 
-Table Must Exist - person
+Table Should Exist - person
+    Table Should Exist    person
     Table Must Exist    person
 
 Verify Row Count is 0
