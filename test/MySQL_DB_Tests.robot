@@ -65,11 +65,11 @@ Verify person Description
     @{queryResults} =    Description    SELECT * FROM person LIMIT 1;
     Log Many    @{queryResults}
     ${output} =    Set Variable    ${queryResults[0]}
-    Should Be Equal As Strings    ${output}    (u'id', 3, None, 11, 11, 0, 1)
+    Should Be Equal As Strings    ${output}    (u'id', 3, None, 11, 11, 0, True)
     ${output} =    Set Variable    ${queryResults[1]}
-    Should Be Equal As Strings    ${output}    (u'first_name', 253, None, 20, 20, 0, 1)
+    Should Be Equal As Strings    ${output}    (u'first_name', 253, None, 20, 20, 0, True)
     ${output} =    Set Variable    ${queryResults[2]}
-    Should Be Equal As Strings    ${output}    (u'last_name', 253, None, 20, 20, 0, 1)
+    Should Be Equal As Strings    ${output}    (u'last_name', 253, None, 20, 20, 0, True)
     ${NumColumns} =    Get Length    ${queryResults}
     Should Be Equal As Integers    ${NumColumns}    3
 
@@ -79,21 +79,21 @@ Verify foobar Description
     @{queryResults} =    Description    SELECT * FROM foobar LIMIT 1;
     Log Many    @{queryResults}
     ${output} =    Set Variable    ${queryResults[0]}
-    Should Be Equal As Strings    ${output}    (u'id', 3, None, 11, 11, 0, 0)
+    Should Be Equal As Strings    ${output}    (u'id', 3, None, 11, 11, 0, False)
     ${output} =    Set Variable    ${queryResults[1]}
-    Should Be Equal As Strings    ${output}    (u'firstname', 253, None, 20, 20, 0, 1)
+    Should Be Equal As Strings    ${output}    (u'firstname', 253, None, 20, 20, 0, True)
     ${NumColumns} =    Get Length    ${queryResults}
     Should Be Equal As Integers    ${NumColumns}    2
 
 Verify Query - Row Count person table
     ${output} =    Query    SELECT COUNT(*) FROM person;
     Log    ${output}
-    Should Be Equal As Strings    ${output}    ((2,),)
+    Should Be Equal As Strings    ${output}    [(2,)]
 
 Verify Query - Row Count foobar table
     ${output} =    Query    SELECT COUNT(*) FROM foobar;
     Log    ${output}
-    Should Be Equal As Strings    ${output}    ((0,),)
+    Should Be Equal As Strings    ${output}    [(0,)]
 
 Verify Execute SQL String - Row Count person table
     ${output} =    Execute SQL String    SELECT COUNT(*) FROM person;
@@ -113,7 +113,7 @@ Insert Data Into Table foobar
 Verify Query - Row Count foobar table 1 row
     ${output} =    Query    SELECT COUNT(*) FROM foobar;
     Log    ${output}
-    Should Be Equal As Strings    ${output}    ((1,),)
+    Should Be Equal As Strings    ${output}    [(1,)]
 
 Verify Delete All Rows From Table - foobar
     Delete All Rows From Table    foobar
