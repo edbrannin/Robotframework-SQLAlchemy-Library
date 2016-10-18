@@ -20,7 +20,7 @@ class Assertion(object):
     Assertion handles all the assertions of Database Library.
     """
 
-    def check_if_exists_in_database(self,selectStatement):
+    def check_if_exists_in_database(self,selectStatement, **named_args):
         """
         Check if any row would be returned by given the input
         `selectStatement`. If there are no results, then this will
@@ -38,11 +38,11 @@ class Assertion(object):
         | Check If Exists In Database | SELECT id FROM person WHERE first_name = 'Franz Allan' | # PASS |
         | Check If Exists In Database | SELECT id FROM person WHERE first_name = 'John' | # FAIL |
         """
-        if not self.query(selectStatement):
+        if not self.query(selectStatement, **named_args):
             raise AssertionError("Expected to have have at least one row from '{0}' "
                                  "but got 0 rows.".format(selectStatement))
 
-    def check_if_not_exists_in_database(self,selectStatement):
+    def check_if_not_exists_in_database(self,selectStatement, **named_args):
         """
         This is the negation of `check_if_exists_in_database`.
 
@@ -62,12 +62,12 @@ class Assertion(object):
         | Check If Not Exists In Database | SELECT id FROM person WHERE first_name = 'John' | # PASS |
         | Check If Not Exists In Database | SELECT id FROM person WHERE first_name = 'Franz Allan' | # FAIL |
         """
-        queryResults = self.query(selectStatement)
+        queryResults = self.query(selectStatement, **named_args)
         if queryResults:
             raise AssertionError("Expected to have have no rows from '{0}' "
                                  "but got some rows : {1}.".format(selectStatement, queryResults))
 
-    def row_count_is_0(self,selectStatement):
+    def row_count_is_0(self,selectStatement, **named_args):
         """
         Check if any rows are returned from the submitted `selectStatement`.
         If there are, then this will throw an AssertionError.
@@ -84,12 +84,12 @@ class Assertion(object):
         | Row Count is 0 | SELECT id FROM person WHERE first_name = 'Franz Allan' | # FAIL |
         | Row Count is 0 | SELECT id FROM person WHERE first_name = 'John' | # PASS |
         """
-        num_rows = self.row_count(selectStatement)
+        num_rows = self.row_count(selectStatement, **named_args)
         if (num_rows > 0):
             raise AssertionError("Expected zero rows to be returned from '{0}' "
                                  "but got rows back. Number of rows returned was {1}".format(selectStatement, num_rows))
 
-    def row_count_is_equal_to_x(self,selectStatement,numRows):
+    def row_count_is_equal_to_x(self,selectStatement,numRows, **named_args):
         """
         Check if the number of rows returned from `selectStatement` is equal to
         the value submitted. If not, then this will throw an AssertionError.
@@ -107,12 +107,12 @@ class Assertion(object):
         | Row Count Is Equal To X | SELECT id FROM person | 1 | # FAIL |
         | Row Count Is Equal To X | SELECT id FROM person WHERE first_name = 'John' | 0 | # PASS |
         """
-        num_rows = self.row_count(selectStatement)
+        num_rows = self.row_count(selectStatement, **named_args)
         if (num_rows != int(numRows.encode('ascii'))):
             raise AssertionError("Expected same number of rows to be returned from '{0}' "
                                  "than the returned rows of {1}".format(selectStatement, num_rows))
 
-    def row_count_is_greater_than_x(self,selectStatement,numRows):
+    def row_count_is_greater_than_x(self,selectStatement,numRows, **named_args):
         """
         Check if the number of rows returned from `selectStatement` is greater
         than the value submitted. If not, then this will throw an AssertionError.
@@ -130,7 +130,7 @@ class Assertion(object):
         | Row Count Is Greater Than X | SELECT id FROM person | 1 | # PASS |
         | Row Count Is Greater Than X | SELECT id FROM person WHERE first_name = 'John' | 0 | # FAIL |
         """
-        num_rows = self.row_count(selectStatement)
+        num_rows = self.row_count(selectStatement, **named_args)
         if (num_rows <= int(numRows.encode('ascii'))):
             raise AssertionError("Expected more rows to be returned from '{0}' "
                                  "than the returned rows of {1}".format(selectStatement, num_rows))
