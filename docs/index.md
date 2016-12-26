@@ -2,4 +2,5 @@
 
 Documentation:
 
-* [Latest](latest/)
+* [Latest](latest/SQLAlchemyLibrary.html)
+* [0.1](0.1/SQLAlchemyLibrary.html)
