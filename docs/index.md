@@ -6,7 +6,7 @@ This is a fork of [Robotframework-Database-Library](http://franz-see.github.io/R
 
 [Project on GitHub](https://github.com/edbrannin/Robotframework-SQLAlchemy-Library)
 
-Documentation:
+## Documentation:
 
 * [Latest](latest/SQLAlchemyLibrary.html)
 * [0.1](0.1/SQLAlchemyLibrary.html)
