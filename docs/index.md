@@ -1,5 +1,7 @@
 # SQLAlchemyLibrary for Robot Framework
 
+[Project on GitHub](https://github.com/edbrannin/Robotframework-SQLAlchemy-Library)
+
 Documentation:
 
 * [Latest](latest/SQLAlchemyLibrary.html)
