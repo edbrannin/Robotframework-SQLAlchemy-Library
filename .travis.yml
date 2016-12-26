@@ -8,8 +8,13 @@ python:
     # - "3.5"
     # - "3.5-dev" # 3.5 development branch
     # - "nightly" # currently points to 3.6-dev
+env:
+  - ROBOT_VERSION=2.9.2
+  - ROBOT_VERSION=3.0
 # command to install dependencies
-install: "python setup.py install"
+install:
+  - "pip install -q robotframework==$ROBOT_VERSION"
+  - "python setup.py install"
 # command to run tests
 script:
   - cd test
